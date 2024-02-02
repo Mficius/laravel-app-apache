@@ -5,4 +5,38 @@ services:
     volumes:
       - ./laravel-app:/var/www/html
     ports:
-      - 9000:80
+      - 80:80
+
+  mysql:
+    image: mysql/mysql-server:8.0
+    environment:
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: 'laravel_db'
+      MYSQL_USER: 'root'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    ports:
+      - 3306:3306
+
+    volumes:
+      - db-data:/var/lib/mysql
+
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8081:80
+    environment:
+      PMA_HOST: 'mysql'
+      PMA_USER: 'root'
+
+    depends_on:
+     - mysql
+
+    volumes:
+     - phpmyadmin_data:/var/www/phpmyadmin
+      
+
+
+volumes:
+  db-data: ~
+  phpmyadmin_data:
